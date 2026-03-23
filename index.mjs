@@ -86,4 +86,4 @@ builder.defineStreamHandler(async ({ id }) => {
 const addonInterface = builder.getInterface()
 
 // 🚀 DENO DEPLOY SERVER
-Deno.serve((req) => addonInterface(req))
+Deno.serve(req => addonInterface(req))
