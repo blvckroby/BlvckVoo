@@ -18,7 +18,7 @@ const manifest = {
 
 const builder = new addonBuilder(manifest)
 
-let cachedChannels = null
+let cachedChannels: any[] | null = null
 
 async function loadChannels() {
   if (cachedChannels) return cachedChannels
@@ -28,8 +28,8 @@ async function loadChannels() {
     const json = await res.json()
 
     cachedChannels = json
-      .filter(ch => ch.country === "Italy")
-      .map(ch => ({
+      .filter((ch: any) => ch.country === "Italy")
+      .map((ch: any) => ({
         id: ch.id,
         name: ch.name,
         logo: ch.logo || null,
@@ -75,4 +75,15 @@ builder.defineStreamHandler(async ({ id }) => {
     }
   }
 
-  return
+  return {
+    streams: [{
+      title: channel.name,
+      url: `https://vavoo.to/play/${realId}/index.m3u8`
+    }]
+  }
+})
+
+const addonInterface = builder.getInterface()
+
+// 🚀 DENO DEPLOY SERVER
+Deno.serve((req) => addonInterface(req))
