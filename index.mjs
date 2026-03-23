@@ -18,7 +18,7 @@ const manifest = {
 
 const builder = new addonBuilder(manifest)
 
-let cachedChannels: any[] | null = null
+let cachedChannels = null
 
 async function loadChannels() {
   if (cachedChannels) return cachedChannels
