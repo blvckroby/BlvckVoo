@@ -28,8 +28,8 @@ async function loadChannels() {
     const json = await res.json()
 
     cachedChannels = json
-      .filter((ch: any) => ch.country === "Italy")
-      .map((ch: any) => ({
+      .filter(ch => ch.country === "Italy")
+      .map(ch => ({
         id: ch.id,
         name: ch.name,
         logo: ch.logo || null,
