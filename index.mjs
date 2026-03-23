@@ -95,3 +95,9 @@ builder.defineStreamHandler(async ({ id }) => {
 })
 
 export default builder.getInterface()
+const port = process.env.PORT || 7000
+
+http.createServer((req, res) => addonInterface(req, res)).listen(port)
+
+console.log("Addon running on port " + port)
+
