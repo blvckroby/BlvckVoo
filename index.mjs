@@ -1,5 +1,4 @@
-import { addonBuilder } from "stremio-addon-sdk"
-import fetch from "node-fetch"
+import { addonBuilder } from "https://esm.sh/stremio-addon-sdk@1.6.0"
 
 const manifest = {
   id: "community.vavoo.italy",
@@ -19,7 +18,6 @@ const manifest = {
 
 const builder = new addonBuilder(manifest)
 
-// Cache in memoria
 let cachedChannels = null
 
 async function loadChannels() {
@@ -29,7 +27,6 @@ async function loadChannels() {
     const res = await fetch("https://vavoo.to/channels")
     const json = await res.json()
 
-    // Filtra solo i canali italiani
     cachedChannels = json
       .filter(ch => ch.country === "Italy")
       .map(ch => ({
@@ -47,9 +44,6 @@ async function loadChannels() {
   }
 }
 
-// ----------------------
-// CATALOG HANDLER
-// ----------------------
 builder.defineCatalogHandler(async () => {
   const channels = await loadChannels()
 
@@ -65,9 +59,6 @@ builder.defineCatalogHandler(async () => {
   return { metas }
 })
 
-// ----------------------
-// STREAM HANDLER
-// ----------------------
 builder.defineStreamHandler(async ({ id }) => {
   const realId = id.replace("vavoo_", "")
   const channels = await loadChannels()
@@ -75,7 +66,6 @@ builder.defineStreamHandler(async ({ id }) => {
 
   if (!channel) return { streams: [] }
 
-  // Se Vavoo fornisce già l'URL diretto
   if (channel.url) {
     return {
       streams: [{
@@ -85,19 +75,4 @@ builder.defineStreamHandler(async ({ id }) => {
     }
   }
 
-  // Altrimenti generiamo l'URL standard
-  return {
-    streams: [{
-      title: channel.name,
-      url: `https://vavoo.to/play/${realId}/index.m3u8`
-    }]
-  }
-})
-
-export default builder.getInterface()
-const port = process.env.PORT || 7000
-
-http.createServer((req, res) => addonInterface(req, res)).listen(port)
-
-console.log("Addon running on port " + port)
-
+  return
