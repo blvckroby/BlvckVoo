@@ -1,0 +1,14 @@
+{
+  "name": "vavoo-italy-addon",
+  "version": "1.0.0",
+  "description": "Addon Stremio che importa solo i canali italiani da Vavoo",
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "stremio-addon-sdk": "^1.6.0",
+    "node-fetch": "^3.3.2"
+  }
+}
